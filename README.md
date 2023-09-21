@@ -1,32 +1,33 @@
-# Injection de dépendance
+# Dependency injection
 
-L'application ici présente permet actuellement d'afficher la liste des étudiants de l'école de Toulouse.
+This application currently displays the list of students at the Toulouse school.
 
-Bordeaux aimerait avoir la même application, affichant la liste de ses élèves.
+Bordeaux would like to have the same application, displaying the list of its students.
 
-Il te faut donc adapter le code afin de changer l'affichage de la liste d'élèves, en fonction de l'école.
+You therefore need to adapt the code to change the display of the student list, depending on the school.
 
-## 1 - État actuel : couplage fort
+## 1 - Current state: strong coupling
 
-En regardant le code actuel du projet, tu peux voir que la liste des élèves est "en dur" dans la classe `StudentController`.
+Looking at the current project code, you can see that the student list is "hard-coded" into the `StudentController` class.
 
-> Quand une classe crée les instances d'une autre classe, on appelle cela un couplage fort.
+> When a class creates instances of another class, this is called strong coupling.
 
-Afin d'afficher une autre liste, il te faudrait créer des méthodes différentes et appeler ces dernières selon l'école. Le code devriendra de plus en plus difficile à maintenir, au fur et à mesure d'ajouts ou des modifications futures.
+To display another list, you'd have to create different methods and call them according to the school. The code will become increasingly difficult to maintain, as future additions or modifications are made.
 
-> Tu peux tester l'application avec la commande `mvn spring-boot:run`
+> You can test the application with the command `mvn spring-boot:run`.
 
-## 2 - Passage à l'injection de dépendance : couplage faible
 
-Afin d'améliorer le code existant et retirer le couplage fort, tu va mettre en place un **DAO**, ainsi qu'une **injection de dépendance** :
+## 2 - Switching to dependency injection: weak coupling
 
-* Crée une nouvelle interface `StudentDao`, qui possède la signature de la méthode `findAll()`, retournant `List<Student>`.
-* Crée une classe `StudentRepoTls`, implémentant `StudentDao`. L'implémentation retourne la liste des étudiants Toulousains (celle qui est actuellement dans `StudentController`).
-* Modifie `StudentController` afin de récupérer la liste d'étudiants à partir de `StudentRepoTls`, par injection de dépendance.
+To improve existing code and remove strong coupling, you'll implement a **DAO**, as well as **dependency injection**:
 
-> Tu n'auras pas à créer de fichier *.xml* dans ce projet
+* Create a new `StudentDao` interface, which has the signature of the `findAll()` method, returning `List<Student>`.
+* Creates a `StudentRepoTls` class, implementing `StudentDao`. The implementation returns the list of Toulouse students (the one currently in `StudentController`).
+* Modify `StudentController` to retrieve the list of students from `StudentRepoTls`, by dependency injection.
 
-## 3 - Plusieurs implémentations
+> You won't need to create an *.xml* file in this project.
 
-* Crée une classe `StudentRepoBdx`, seconde implémentation de `StudentDao`, retournant une liste d'étudiants Bordelais (de ton choix).
-* Modifie `StudentController`, afin de pouvoir charger la liste d'étudiant en fonction de l'implémentation choisie, grâce à `@Qualifier`.
+## 3 - Multiple implementations
+
+* Create a `StudentRepoBdx` class, a second implementation of `StudentDao`, returning a list of Bordeaux students (of your choice).
+* Modify `StudentController`, to load the student list according to the chosen implementation, using `@Qualifier`.
